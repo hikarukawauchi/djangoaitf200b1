@@ -7,7 +7,8 @@ from tensorflow.keras.models import load_model
 from PIL import Image
 import io, base64
 
-graph = tf.get_default_graph()
+#graph = tf.get_default_graph()
+graph = tf.compat.v1.get_default_graph
 
 class Photo(models.Model):
     image = models.ImageField(upload_to='photos')
@@ -21,7 +22,8 @@ class Photo(models.Model):
     def predict(self):
         model = None
         global graph
-        with graph.as_default():
+        #with graph.as_default():
+        with graph().as_default():
             model = load_model(self.MODEL_FILE_PATH)
 
             img_data = self.image.read()
